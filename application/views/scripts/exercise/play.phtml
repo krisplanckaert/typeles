@@ -1,0 +1,21 @@
+<?php 
+
+echo $this->render('/exercise/js/default.phtml');?>
+<div style="display: none;" id="exerciseId"><?php echo $this->exercise['ID'];?></div>
+<div style="display: none;" id="exercise"><?php echo $this->exercise['Text'];?></div>
+<span id="faults">0 fouten</span>
+in
+<span id="time">00u00'00"0ms</span>
+
+<br>
+<?php
+$lengte = strlen($this->exercise['Text']);
+for($i=0;$i<$lengte;$i++) { ?>
+    <span class="todo" id="string<?php echo $i;?>" class="normal">
+        <?php echo $this->exercise['Text'][$i];?>
+    </span>
+<?php } ?>
+
+<div id="result"></div>
+
+

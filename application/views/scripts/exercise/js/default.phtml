@@ -1,0 +1,77 @@
+<?php
+$this->headscript()
+        ->prependFile('/base/js/jquery/jquery.min.js').PHP_EOL;
+
+$this->headScript()->captureStart(); ?>
+
+$(document).ready(function() {
+    h=m=s=ms=stop=aantalFouten=teller=teller2=0;
+    documentText="";
+    exercise = $("#exercise").text();
+    $(document).keyup(function (event) {
+        documentText = documentText+event.originalEvent.key
+        myCheckText(documentText);
+    });
+    
+    function myCheckText(text) {
+        if(stop==1)return;
+        if(teller==0) {
+            start = Date.now();
+            startTime();
+        }
+        string = $("#string"+teller2).text()
+        char = string.substr(2, string.length);
+        char = char.trim();
+        if(char=="") char=" ";
+        
+        if(text[teller] == char) {
+            $("#string"+teller2).removeClass("error");
+            $("#string"+teller2).addClass("done");
+            teller2++;
+        } else {
+            $("#string"+teller2).addClass("error");
+            aantalFouten++;
+            $("#faults").text(aantalFouten+" fouten");
+        }
+        if(teller2==exercise.length) {
+            einde = Date.now();
+            tijd = (einde - start)/1000
+            exerciseId = $("#exerciseId").text();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->baseUrl() . '/result/ajax-save'; ?>",
+                dataType: "html",
+                data: {fouten: aantalFouten, tijd: tijd, ID_Exercise: exerciseId },
+                success: function(html){
+                    $("#faults").text(aantalFouten+" fouten");
+                    $("#time").text(tijd+" seconden");
+                    //Todo : toon rangschikking 
+                    $("#result").append(html);
+                    stop=1;
+                }
+            });
+            teller2++;
+        }         
+        teller++;
+    }
+    function startTime() {
+        if(stop==0) {
+            ms++;
+            if(ms>9) { s++; ms=0; }
+            if(s>59) { m++; s=0;  }
+            if(m>59) { h++; m=0;  }
+            if(s<10) sec="0"+s;
+            if(m<10) min="0"+m;
+            if(h<10) uur="0"+h;
+            $("#time").text(uur+"u"+min+"'"+sec+'"'+ms+"ms");
+            var t = setTimeout(function(){startTime()},100);
+        }
+    }
+
+    function checkTime(i) {
+        if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+    
+});
+<?php $this->headScript()->captureEnd();  ?>

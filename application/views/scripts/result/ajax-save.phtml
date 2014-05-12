@@ -1,0 +1,30 @@
+<?php 
+$exercise = $this->exercises[$this->data['ID_Exercise']]; 
+$teller=0; ?>
+    <table style="border: 1px solid black;">
+<?php   $first=true;
+        if(isset($exercise['result'])) {
+            foreach($exercise['result'] as $result) { 
+                $teller++;
+                if($first) {
+                    $first=false; ?>
+                    <tr>
+                        <th colspan="3">Mijn beste</th>
+                    </tr>
+                    <tr>
+                        <th>Plaats</th>
+                        <th>Tijd</th>
+                        <th>Fouten</th>
+                    </tr>
+<?php           } 
+                $class = $this->data['tijd']==$result['Time'] && $this->data['fouten']==$result['Faults'] ? 'selected' : ''; ?>
+                <tr>
+                    <td class="<?php echo $class;?>"><?php echo $teller; ?></td>
+                    <td class="<?php echo $class;?>"><?php echo $result['Time'];?></td>
+                    <td class="<?php echo $class;?>"><?php echo $result['Faults'];?></td>
+                </tr>
+<?php       } 
+        } ?>
+    </table>
+
+

@@ -1,0 +1,138 @@
+<?php $this->headScript()->captureStart(); ?>
+  $('#btnMijnBeste').live('click', function(event) {
+    if($(".divMijnBeste").is(":visible")){
+        $('.divMijnBeste').hide();
+        $('.divMijnBeste10').show();
+    } else {
+        $('.divMijnBeste').show();
+        $('.divMijnBeste10').hide();
+    }
+    $('#btnMijnBeste').blur();
+  });
+<?php
+$this->headScript()->captureEnd();   
+
+$this->placeholder('mainTitle')->set($this->translate('Oefeningen'));
+// ------------------------------------------------------
+$this->headScript()->captureStart(); ?>
+  
+<input id="btnMijnBeste" type="button" value="Toon mijn beste">
+
+<?php foreach($this->exercises as $exercise) { ?>
+    
+    <div STYLE="clear: left;">
+        <a href="<?php echo $this->baseUrl() . '/exercise/play/exercise/'.$exercise['ID']; ?>" class="tab-nav">
+            <?php echo $exercise['Omschrijving']; ?>
+        </a>
+        <?php echo $exercise['Text']; ?>
+        <div>
+            <div class="divMijnBeste">
+                <table style="border: 1px solid black;">
+<?php               $first=true;
+                    if(isset($exercise['result'])) {
+                        foreach($exercise['result'] as $result) { 
+                            if($first) {
+                                $first=false; ?>
+                                <tr>
+                                    <th colspan="3">Mijn beste</th>
+                                </tr>
+                                <tr>
+                                    <th>Tijd</th>
+                                    <th>Fouten</th>
+                                </tr>
+<?php                       } ?>
+                            <tr>
+                                <td><?php echo $result['Time'];?></td>
+                                <td><?php echo $result['Faults'];?></td>
+                            </tr>
+<?php                       break;
+                        } 
+                    } ?>
+                </table>
+            </div>
+            <div class="divMijnBeste10">
+                <table style="border: 1px solid black;">
+<?php               $first=true;
+                    if(isset($exercise['result'])) {
+                        foreach($exercise['result'] as $result) { 
+                            if($first) {
+                                $first=false; ?>
+                                <tr>
+                                    <th colspan="3">Mijn beste</th>
+                                </tr>
+                                <tr>
+                                    <th>Tijd</th>
+                                    <th>Fouten</th>
+                                </tr>
+<?php                       } ?>
+                            <tr>
+                                <td><?php echo $result['Time'];?></td>
+                                <td><?php echo $result['Faults'];?></td>
+                            </tr>
+<?php                   } 
+                    } ?>
+                </table>
+            </div>
+            <div class="divAlleBeste" >
+                <table style="border: 1px solid black;">
+<?php               $first=true;
+                    if(isset($exercise['resultAll'])) {
+                        foreach($exercise['resultAll'] as $result) { 
+                            if($first) {
+                                $first=false; ?>
+                                <tr>
+                                    <th colspan="3">Alle beste</th>
+                                </tr>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Tijd</th>
+                                    <th>Fouten</th>
+                                </tr>
+<?php                       } ?>
+                            <tr>
+                                <td><?php echo $result['user'];?></td>
+                                <td><?php echo $result['Time'];?></td>
+                                <td><?php echo $result['Faults'];?></td>
+                            </tr>
+<?php                       break;
+                        }
+                    } ?>
+                </table>
+            </div>
+            <div class="divAlleBeste10" >
+                <table style="border: 1px solid black;">
+<?php               $first=true;
+                    if(isset($exercise['resultAll'])) {
+                        foreach($exercise['resultAll'] as $result) { 
+                            if($first) {
+                                $first=false; ?>
+                                <tr>
+                                    <th colspan="3">Alle beste</th>
+                                </tr>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Tijd</th>
+                                    <th>Fouten</th>
+                                </tr>
+<?php                       } ?>
+                            <tr>
+                                <td><?php echo $result['user'];?></td>
+                                <td><?php echo $result['Time'];?></td>
+                                <td><?php echo $result['Faults'];?></td>
+                            </tr>
+<?php                   }
+                    } ?>
+                </table>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<div STYLE="clear: left;">
+    <a href="<?php echo $this->baseUrl() . '/exercise/detail'; ?>" class="tab-nav">
+        <img src="/base/images/icons/create.png" title="<?php echo $this->translate('Create',1); ?>" />
+    </a>
+</div>
+<?php 
+
+echo $this->render('includes/datagrid/default.phtml');
+
